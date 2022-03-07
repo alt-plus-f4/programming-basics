@@ -1,8 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
-/////////////////////////////////////////////
-/// Implement as many methods as you can ///
-///////////////////////////////////////////
+#include <stdio.h>
+#include <stdlib.h>
 
 struct stack {
     int* data;
@@ -24,7 +21,7 @@ void delete(struct stack* s);
 int is_empty(struct stack* s);
 
 // Returns 1 if stack is full (size == capacity).
-// Returns 1 if stack is not full.
+// Returns 0 if stack is not full.
 int is_full(struct stack* s);
 
 // Returns 0 if successful.
@@ -41,7 +38,7 @@ int pop_back(struct stack* s);
 // Returns 0 if everything is O.K.
 // Use is_full() function
 // Look up how to use realloc.
-void resize(struct stack* s);
+int resize(struct stack* s);
 
 // Driver code, DO NOT edit!
 int main() {
@@ -68,3 +65,48 @@ int main() {
     delete(&s);
     return 0;
 }
+
+void init(struct stack* s, size_t capacity){
+    s -> capacity = capacity;
+    s -> size = 0;
+    s -> data = (int*)malloc(sizeof(int) * capacity);
+}
+
+void delete(struct stack* s){
+    free(s -> data);
+    s -> size = 0;
+    s -> capacity = 0;
+}
+
+int push_back(struct stack* s, int element){
+    if(s -> size == s -> capacity)
+        resize(s);
+    s -> data[s->size] = element;
+    s -> size++;
+    return 0;
+}
+
+int pop_back(struct stack* s){
+    if(s -> size == 0){
+        printf("Empty sector!\n");
+        return -1;
+    }
+    s -> size--;
+    return s -> data[s->size];
+}
+
+int resize(struct stack* s){
+    s -> capacity *= 2;
+    s -> data = (int*)realloc(s -> data, sizeof(int) * s -> capacity);
+    return 0;
+}
+
+int is_full(struct stack* s){
+    return s -> size == s -> capacity ? 1 : 0;
+}
+
+int is_empty(struct stack* s){
+    return s -> size == 0;
+}
+
+//! End of code..
